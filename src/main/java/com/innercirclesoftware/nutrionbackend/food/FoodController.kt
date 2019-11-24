@@ -1,6 +1,5 @@
 package com.innercirclesoftware.nutrionbackend.food
 
-import com.innercirclesoftware.nutrionbackend.food.nutrients.FoodNutrient
 import com.innercirclesoftware.nutrionbackend.food.nutrients.FoodNutrientRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.repository.findByIdOrNull
@@ -11,17 +10,12 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/api/v1/foods")
-class FoodController(@Autowired private val repo: FoodRepository,
-                     @Autowired private val foodImporter: FoodImporter,
+class FoodController(@Autowired private val foodRepository: FoodRepository,
                      @Autowired private val foodNutrientRepository: FoodNutrientRepository) {
 
     @GetMapping("/{id}")
-    fun `find food by id`(@PathVariable("id") id: Long): Food? {
-        return repo.findByIdOrNull(id)
-    }
+    fun `find food by id`(@PathVariable("id") id: Long) = foodRepository.findByIdOrNull(id)
 
     @GetMapping("/{id}/nutrients")
-    fun `list nutrients for food`(@PathVariable("id") foodId: Long): List<FoodNutrient> {
-        return foodNutrientRepository.findAllByFoodIdEquals(foodId)!!
-    }
+    fun `list nutrients for food`(@PathVariable("id") foodId: Long) = foodNutrientRepository.findAllByFoodIdEquals(foodId)
 }
